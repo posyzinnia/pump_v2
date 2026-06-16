@@ -1,4 +1,3 @@
-// State management
 let state = {
   pumpType: "borehole",
   verticalHead: 0,
