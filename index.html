@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องคำนวณหา Head ปั๊ม | KasetInno</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="data/pump_data.js" defer></script>
+    <script src="renderData.js\script.js" defer></script>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <!-- HERO -->
+    <header class="hero">
+        <div class="hero-badge">🌾 KasetInno เกษตรอินโน</div>
+        <h1>เครื่องคำนวณ <span>Head ปั๊ม</span></h1>
+        <p>Head ปั๊ม = HEAD จากระยะส่งในแนวดิ่ง + HEAD จากความยาวท่อ + HEAD จากรูปแบบการส่งน้ำ</p>
+    </header>
+
+    <!-- STICKY NAV -->
+    <nav class="sticky-nav" id="stickyNav">
+        <a href="#part1" class="nav-link active" data-section="part1">1️⃣ ระยะส่งแนวดิ่ง</a>
+        <a href="#part2" class="nav-link" data-section="part2">2️⃣ ความยาวท่อ</a>
+        <a href="#part3" class="nav-link" data-section="part3">3️⃣ รูปแบบจ่ายน้ำ</a>
+        <a href="#calculator" class="nav-link" data-section="calculator">🧮 เครื่องคำนวณ</a>
+    </nav>
+
+    <!-- ════════════════════════════════════
+         PART 1: HEAD จากระยะส่งในแนวดิ่ง
+         ════════════════════════════════════ -->
+    <section class="section" id="part1">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num num-green">1</div>
+                <div>
+                    <h2>Head จากระยะส่งน้ำในแนวดิ่ง</h2>
+                    <p>คิดจากประเภทปั๊มที่ใช้งาน: ปั๊มบาดาล หรือ ปั๊มหอยโข่ง</p>
+                </div>
+            </div>
+
+            <!-- PUMP TYPE TABS -->
+            <div class="pump-tabs">
+                <button class="pump-tab active" onclick="switchPump('borehole', this)">🔩 ปั๊มบาดาล</button>
+                <button class="pump-tab" onclick="switchPump('centrifugal', this)">⚙️ ปั๊มหอยโข่ง</button>
+            </div>
+
+            <!-- BOREHOLE PUMP -->
+            <div class="pump-content active" id="pump-borehole">
+                <div class="card">
+                    <div class="card-title">
+                        <span class="tag tag-green">ปั๊มบาดาล</span>
+                        สูตรคำนวณ Head ระยะส่งในแนวดิ่ง
+                    </div>
+
+                    <div class="formula-box green">
+                        <div class="formula-line">
+                            <strong>Head = <span style="color: red">ระยะสูบน้ำ (20 เมตร)</span> + <span style="color: blue">ระดับน้ำปากบ่อ</span> + ความสูงในการส่งน้ำจากระดับพื้นดิน</strong>
+                        </div>
+                    </div>
+
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-dot dot-green">1</div>
+                            <p><strong><span style="color: red">ระยะสูบน้ำ:</span></strong> <span style="color: red; font-weight: bold;">20 เมตร</span></p>
+                        </div>
+                        <div class="step">
+                            <div class="step-dot dot-green">2</div>
+                            <p><strong><span style="color: blue">ระดับน้ำปากบ่อ:</span></strong> ระยะจากผิวน้ำถึงปากบ่อ (เมตร)</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-dot dot-green">3</div>
+                            <p><strong>ความสูงในการส่งน้ำจากระดับพื้นดิน:</strong> ความสูงจากพื้นดินถึงจุดจ่ายน้ำ (เมตร)</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding: 16px; background: #E8F4EC; border-radius: 8px;">
+                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 10px;">
+                            <strong>💡 วิธีหาความสูงในการส่งน้ำจากพื้นดินโดยคิดจากความยาวท่อเอียง</strong>
+                        </p>
+                    
+                        <ol style="margin: 0; padding-left: 20px; color: var(--text-muted); line-height: 1.8;">
+                            <li>วัดมุมของท่อจากแนวระดับที่ตีนเขา</li>
+                            <li>วัดความยาวของท่อเอียงทั้งหมด</li>
+                            <li>ใช้ค่าตรีโกณมิติ (Sin) เพื่อคำนวณความสูง</li>
+                        </ol>
+                    
+                        <div style="margin-top: 12px; padding: 10px; background: rgba(27,77,53,0.08); border-radius: 6px;">
+                            <strong>สูตร:</strong>
+                            <code style="background: rgba(27,77,53,0.1); padding: 4px 8px; border-radius: 4px;">
+                                ความสูง = ความยาวท่อ × sin(มุม)
+                            </code>
+                        </div>
+                    
+                        <p style="margin-top: 10px; color: var(--text-muted);">
+                            ตัวอย่าง: ท่อยาว 10 เมตร และมีมุม 37°<br>
+                            ความสูง = 10 × sin(37°) ≈ 6 เมตร
+                        </p>
+                    
+                        <p style="margin-top: 12px; color: var(--text-muted);">
+                            📱 หากไม่ทราบค่าความยาวท่อเอียง สามารถใช้ Application <strong>LING</strong> คำนวณความสูงได้ 
+                        </p>
+                    </div>
+                    <div style="
+                        border: 2px solid #1f5db8;
+                        border-radius: 10px;
+                        padding: 20px;
+                        margin-top: 20px;
+                        background: #fafafa;
+                    ">
+                    
+                        <div style="
+                            display: inline-block;
+                            background: #1f5db8;
+                            color: white;
+                            font-weight: bold;
+                            padding: 6px 14px;
+                            border-radius: 6px;
+                            margin-bottom: 15px;
+                        ">
+                            ตัวอย่าง
+                        </div>
+                    
+                        <div style="text-align:center;">
+                            <img src="./image/borehole/borehole_ex.png"
+                                 alt="ปั๊มบาดาล"
+                                 style="max-width:100%; height:auto; margin-bottom:15px;">
+                        </div>
+                        <div style="text-align:center;">
+                            <img src="./image/borehole/borehole_ex2.png"
+                                 alt="ปั๊มบาดาล"
+                                 style="max-width:100%; height:auto; margin-bottom:15px;">
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
+            <!-- CENTRIFUGAL PUMP -->
+            <div class="pump-content" id="pump-centrifugal">
+                <div class="card">
+                    <div class="card-title">
+                        <span class="tag tag-green">ปั๊มหอยโข่ง</span>
+                        สูตรคำนวณ Head ระยะส่งในแนวดิ่ง
+                    </div>
+
+                    <div class="formula-box green">
+                        <div class="formula-line">
+                            <strong>Head = <span style="color: blue">ระดับน้ำปากบ่อ</span> + ความสูงในการส่งน้ำ</strong>
+                        </div>
+                    </div>
+
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-dot dot-green">1</div>
+                            <p><strong><span style="color: blue">ระดับน้ำปากบ่อ:</span></strong> ระยะจากผิวน้ำถึงปั๊ม (เมตร)</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-dot dot-green">2</div>
+                            <p><strong>ความสูงในการส่งน้ำ:</strong> ความสูงที่ส่งน้ำไป (เมตร)</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding: 16px; background: #E8F4EC; border-radius: 8px;">
+                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 10px;">
+                            <strong>💡 วิธีหาความสูงในการส่งน้ำจากพื้นดินโดยคิดจากความยาวท่อเอียง</strong>
+                        </p>
+                    
+                        <ol style="margin: 0; padding-left: 20px; color: var(--text-muted); line-height: 1.8;">
+                            <li>วัดมุมของท่อจากแนวระดับที่ตีนเขา</li>
+                            <li>วัดความยาวของท่อเอียงทั้งหมด</li>
+                            <li>ใช้ค่าตรีโกณมิติ (Sin) เพื่อคำนวณความสูง</li>
+                        </ol>
+                    
+                        <div style="margin-top: 12px; padding: 10px; background: rgba(27,77,53,0.08); border-radius: 6px;">
+                            <strong>สูตร:</strong>
+                            <code style="background: rgba(27,77,53,0.1); padding: 4px 8px; border-radius: 4px;">
+                                ความสูง = ความยาวท่อ × sin(มุม)
+                            </code>
+                        </div>
+                    
+                        <p style="margin-top: 10px; color: var(--text-muted);">
+                            ตัวอย่าง: ท่อยาว 10 เมตร และมีมุม 37°<br>
+                            ความสูง = 10 × sin(37°) ≈ 6 เมตร
+                        </p>
+                    
+                        <p style="margin-top: 12px; color: var(--text-muted);">
+                            📱 หากไม่ทราบค่าความยาวท่อเอียง สามารถใช้ Application <strong>LING</strong> คำนวณความสูงได้ 
+                        </p>
+                    </div>
+                    <div style="
+                        border: 2px solid #1f5db8;
+                        border-radius: 10px;
+                        padding: 20px;
+                        margin-top: 20px;
+                        background: #fafafa;
+                    ">
+                    
+                        <div style="
+                            display: inline-block;
+                            background: #1f5db8;
+                            color: white;
+                            font-weight: bold;
+                            padding: 6px 14px;
+                            border-radius: 6px;
+                            margin-bottom: 15px;
+                        ">
+                            ตัวอย่าง
+                        </div>
+                        <div style="text-align:center;">
+                            <img src="./image/centri/centri_ex.png"
+                                 alt="ปั๊มหอยโข่ง"
+                                 style="max-width:100%; height:auto; margin-bottom:15px;">
+                        </div>
+                        <div style="text-align:center;">
+                            <img src="./image/centri/centri_ex2.png"
+                                 alt="ปั๊มหอยโข่ง"
+                                 style="max-width:100%; height:auto; margin-bottom:15px;">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ════════════════════════════════════
+         PART 2: HEAD จากความยาวท่อ
+         ════════════════════════════════════ -->
+    <section class="section" id="part2">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num num-orange">2</div>
+                <div>
+                    <h2>Head จากความยาวท่อ</h2>
+                    <p>ดูจากขนาดท่อส่ง — <strong>ห้ามลดขนาดท่อ</strong></p>
+                </div>
+            </div>
+
+            <div class="card">
+                <p style="margin-bottom: 16px; color: var(--text-muted); font-size: 15px;">
+                    <strong>ความยาวท่อ</strong> = ระยะท่อในแนวดิ่ง + ระยะท่อในแนวนอน + ระยะท่อในแนวเอียง
+                </p>
+
+                <div class="formula-box orange">
+                    <strong>Head จากความยาวท่อ = ความยาวท่อทั้งหมด ÷ ค่าคงที่ (ขึ้นกับขนาดท่อ)</strong>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="background:#ff8c42; color:white;">ขนาดท่อส่ง</th>
+                            <th style="background:#ff8c42; color:white;">ค่าคงที่ (divisor)</th>
+                            <th style="background:#ff8c42; color:white;">Head จากความยาวท่อ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1.5 นิ้ว</strong></td>
+                            <td>1.5x10</td>
+                            <td style="color: var(--orange); font-weight: 700;">ความยาวท่อ ÷ 15</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2 นิ้ว</strong></td>
+                            <td>2x10</td>
+                            <td style="color: var(--orange); font-weight: 700;">ความยาวท่อ ÷ 20</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3 นิ้ว</strong></td>
+                            <td>3x10</td>
+                            <td style="color: var(--orange); font-weight: 700;">ความยาวท่อ ÷ 30</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4 นิ้ว</strong></td>
+                            <td>4x10</td>
+                            <td style="color: var(--orange); font-weight: 700;">ความยาวท่อ ÷ 40</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="
+                        border: 2px solid #1f5db8;
+                        border-radius: 10px;
+                        padding: 20px;
+                        margin-top: 20px;
+                        background: #fafafa;
+                    ">
+                    
+                        <div style="
+                            display: inline-block;
+                            background: #1f5db8;
+                            color: white;
+                            font-weight: bold;
+                            padding: 6px 14px;
+                            border-radius: 6px;
+                            margin-bottom: 15px;
+                        ">
+                            ตัวอย่าง
+                        </div>
+                        <div style="text-align:center;">
+                            <img src="./image/length/length.png"
+                                 alt="ความยาวท่อ"
+                                 style="max-width:100%; height:auto; margin-bottom:15px;">
+                        </div>
+                        <div style="text-align:center;">
+                            <img src="./image/length/length2.png"
+                                 alt="ความยาวท่อ"
+                                 style="max-width:100%; height:auto; margin-bottom:15px;">
+                        </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ════════════════════════════════════
+         PART 3: รูปแบบการจ่ายน้ำ
+         ════════════════════════════════════ -->
+    <section class="section" id="part3">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num num-purple">3</div>
+                <div>
+                    <h2>Head จากรูปแบบการจ่ายน้ำ</h2>
+                    <p>มีทั้งหมด 3 รูปแบบ</p>
+                </div>
+            </div>
+
+            <div class="grid-3">
+                <div class="card" style="border-top: 4px solid var(--green-dark);">
+                    <h3 style="color: var(--green-dark); margin-bottom: 12px;">ปากท่อ PVC</h3>
+                    <div class="result-value" style="color: var(--green-dark);">0 เมตร</div>
+                    <p style="color: var(--text-muted);">ไม่มี Head เพิ่มเติม</p>
+                    <div style="text-align:center;">
+                        <img src="./image/pipe.png"
+                             alt="ปากท่อ PVC"
+                           style="max-width:100%; height:auto; margin-bottom:15px;">
+                    </div>
+                </div>
+
+                <div class="card" style="border-top: 4px solid var(--orange);">
+                    <h3 style="color: var(--orange); margin-bottom: 12px;">หัวน้ำหยด Dripper</h3>
+                    <div class="result-value" style="color: var(--orange);">5 เมตร</div>
+                    <p style="color: var(--text-muted);">แรงดันใช้งาน (บาร์) x 10 = head (เมตร)</p>
+                    <div style="text-align:center;">
+                        <img src="./image/dripper/dripper.png"
+                             alt="หัวน้ำหยด"
+                           style="max-width:100%; height:auto; margin-bottom:15px;">
+                    </div>
+
+                </div>
+
+                <div class="card" style="border-top: 4px solid var(--purple);">
+                    <h3 style="color: var(--purple); margin-bottom: 12px;">สปริงเกอร์ มินิสปริงเกอร์</h3>
+                    <div class="result-value" style="color: var(--purple);">10 เมตร</div>
+                    <p style="color: var(--text-muted);">แรงดันใช้งาน (บาร์) x 10 = head (เมตร)</p>
+                    <div style="text-align:center;">
+                        <img src="./image/springer/springer.png"
+                             alt="สปริงเกอร์"
+                           style="max-width:100%; height:auto; margin-bottom:15px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info" style="margin-top: 24px;">
+                <i class="fas fa-lightbulb"></i>
+                <div>
+                    <strong>ค้นหาแรงดันใช้งาน:</strong> ค้นหาใน Google หรือ ChatGPT เพื่อหาแรงดันใช้งานของหัวน้ำหยด/สปริงเกอร์แต่ละรุ่น
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ════════════════════════════════════
+         CALCULATOR
+         ════════════════════════════════════ -->
+    <section class="section" id="calculator">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-num num-green">🧮</div>
+                <div>
+                    <h2>เครื่องคำนวณ Head ปั๊ม</h2>
+                    <p>กรอกข้อมูลและคำนวณผลลัพธ์ได้ทันที</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span class="tag tag-green">ส่วนที่ 1</span>
+                    Head จากระยะส่งน้ำในแนวดิ่ง
+                </div>
+                <!-- PUMP TYPE SELECTION -->
+                <div class="input-group">
+                    <label class="input-label">📋 เลือกประเภทปั๊ม</label>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="selectPumpType('borehole')" id="btn-borehole">
+                            🔩 ปั๊มบาดาล
+                        </button>
+                        <button class="btn btn-secondary" onclick="selectPumpType('centrifugal')" id="btn-centrifugal">
+                            ⚙️ ปั๊มหอยโข่ง
+                        </button>
+                    </div>
+                </div>
+
+                <div id="calc-borehole" class="tab-content active">
+                    <div style="background: var(--green-light); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                        <p style="font-weight: 700; color: var(--green-dark);">🔩 ปั๊มบาดาล</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">ระยะสูบน้ำ <span style="color: red; font-weight: bold;">20 เมตร</span></label>
+                        <span class="input-hint">เพื่อประสิทธิภาพสูงสุด</span>
+                        <div class="input-wrapper">
+                            <input type="number" id="bore-depth" placeholder="เช่น 20" min="0" step="0.1">
+                            <div class="input-unit">เมตร</div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">ระดับน้ำปากบ่อ</label>
+                        <span class="input-hint">ระยะจากผิวน้ำถึงปากบ่อ</span>
+                        <div class="input-wrapper">
+                            <input type="number" id="bore-water-level" placeholder="เช่น 10" min="0" step="0.1">
+                            <div class="input-unit">เมตร</div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">ความสูงในการส่งน้ำจากระดับพื้นดิน</label>
+                        <span class="input-hint">ความสูงจากพื้นดินถึงจุดจ่ายน้ำ</span>
+                        <div class="input-wrapper">
+                            <input type="number" id="bore-delivery-height" placeholder="เช่น 16" min="0" step="0.1">
+                            <div class="input-unit">เมตร</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="calculateBorehead()" style="width: 100%; margin-top: 12px;">
+                        <i class="fas fa-calculator"></i> คำนวณ Head (แนวดิ่ง)
+                    </button>
+
+                    <div id="bore-result" style="display: none; margin-top: 16px;">
+                        <div class="result-box">
+                            <h3>Head จากระยะส่งแนวดิ่ง (ปั๊มบาดาล)</h3>
+                            <div class="result-value" id="bore-result-value">0</div>
+                            <div class="result-unit">เมตร</div>
+                        </div>
+                        <div class="formula-box green" style="margin-top: 16px;">
+                            <div class="formula-line">
+                                <span class="fval" id="bore-calc-show"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="calc-centrifugal" class="tab-content">
+                    <div style="background: var(--green-light); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                        <p style="font-weight: 700; color: var(--green-dark);">⚙️ ปั๊มหอยโข่ง</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">ระดับน้ำปากบ่อ</label>
+                        <span class="input-hint">ระยะจากผิวน้ำถึงปั๊ม </span>
+                        <div class="input-wrapper">
+                            <input type="number" id="cent-suction-depth" placeholder="เช่น 4" min="0" step="0.1">
+                            <div class="input-unit">เมตร</div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">ความสูงในการส่งน้ำ</label>
+                        <span class="input-hint">ความสูงที่ส่งน้ำไป</span>
+                        <div class="input-wrapper">
+                            <input type="number" id="cent-delivery-height" placeholder="เช่น 2" min="0" step="0.1">
+                            <div class="input-unit">เมตร</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="calculateCenthead()" style="width: 100%; margin-top: 12px;">
+                        <i class="fas fa-calculator"></i> คำนวณ Head (แนวดิ่ง)
+                    </button>
+
+                    <div id="cent-result" style="display: none; margin-top: 16px;">
+                        <div class="result-box">
+                            <h3>Head จากระยะส่งแนวดิ่ง (ปั๊มหอยโข่ง)</h3>
+                            <div class="result-value" id="cent-result-value">0</div>
+                            <div class="result-unit">เมตร</div>
+                        </div>
+                        <div class="formula-box green" style="margin-top: 16px;">
+                            <div class="formula-line">
+                                <span class="fval" id="cent-calc-show"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HEAD FROM PIPE LENGTH -->
+            <div class="card">
+                <div class="card-title">
+                    <span class="tag tag-orange">ส่วนที่ 2</span>
+                    Head จากความยาวท่อ
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">ความยาวท่อทั้งหมด</label>
+                    <span class="input-hint">รวม: แนวดิ่ง + แนวนอน + แนวเอียง</span>
+                    <div class="input-wrapper">
+                        <input type="number" id="pipe-length" placeholder="เช่น 24" min="0" step="0.1">
+                        <div class="input-unit">เมตร</div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">ขนาดท่อส่ง</label>
+                    <select id="pipe-size" style="width: 100%;">
+                        <option value="">-- เลือกขนาดท่อ --</option>
+                        <option value="1.5">1.5 นิ้ว (divisor: 15)</option>
+                        <option value="2">2 นิ้ว (divisor: 20)</option>
+                        <option value="3">3 นิ้ว (divisor: 30)</option>
+                        <option value="4">4 นิ้ว (divisor: 40)</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" onclick="calculatePipeHead()" style="width: 100%; margin-top: 12px;">
+                    <i class="fas fa-calculator"></i> คำนวณ Head (ท่อ)
+                </button>
+
+                <div id="pipe-result" style="display: none; margin-top: 16px;">
+                    <div class="result-box">
+                        <h3>Head จากความยาวท่อ</h3>
+                        <div class="result-value" id="pipe-result-value">0</div>
+                        <div class="result-unit">เมตร</div>
+                    </div>
+                    <div class="formula-box orange" style="margin-top: 16px;">
+                        <div class="formula-line">
+                            <span class="fval orange" id="pipe-calc-show"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HEAD FROM DELIVERY TYPE -->
+            <div class="card">
+                <div class="card-title">
+                    <span class="tag tag-purple">ส่วนที่ 3</span>
+                    Head จากรูปแบบการจ่ายน้ำ
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">รูปแบบการจ่ายน้ำ</label>
+                    <select id="delivery-type" onchange="updateDeliveryHead()" style="width: 100%;">
+                        <option value="">-- เลือกรูปแบบการจ่ายน้ำ --</option>
+                        <option value="0">ปากท่อ PVC</option>
+                        <option value="manual">หัวน้ำหยด Dripper</option>
+                        <option value="sprinkler">สปริงเกอร์</option>
+                    </select>
+                </div>
+
+                <div id="pressure-input" style="display: none;">
+                    <div class="input-group">
+                        <label class="input-label">แรงดันใช้งาน</label>
+                        <span class="input-hint">โดยทั่วไปหัวน้ำหยด = 0.5 บาร์ และ สปริงเกอร์ = 1 บาร์</span>
+                        <div class="input-wrapper">
+                            <input type="number" id="delivery-pressure" placeholder="เช่น 0.5" min="0" step="0.1">
+                            <div class="input-unit">บาร์</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="calculateDeliveryHead()" style="width: 100%;">
+                        <i class="fas fa-calculator"></i> คำนวณ Head (การจ่ายน้ำ)
+                    </button>
+                </div>
+
+                <div id="delivery-result" style="display: none; margin-top: 16px;">
+                    <div class="result-box">
+                        <h3>Head จากรูปแบบการจ่ายน้ำ</h3>
+                        <div class="result-value" id="delivery-result-value">0</div>
+                        <div class="result-unit">เมตร</div>
+                    </div>
+                    <div class="formula-box purple" style="margin-top: 16px;">
+                        <div class="formula-line">
+                            <span class="fval purple" id="delivery-calc-show"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOTAL HEAD CALCULATION -->
+            <div class="card" style="border: 2px solid var(--gold); background: linear-gradient(135deg, #FFFBE6 0%, #FFF8CC 100%);">
+                <div class="card-title" style="color: var(--gold);">
+                    <i class="fas fa-crown"></i> Head ปั๊มทั้งหมด
+                </div>
+
+                <button class="btn btn-primary" onclick="calculateTotalHead()" style="width: 100%; padding: 16px;">
+                    <i class="fas fa-plus"></i> คำนวณ Head ทั้งหมด
+                </button>
+
+                <div id="total-result" style="display: none; margin-top: 20px;">
+                    <div class="summary-box">
+                        <div class="summary-item">
+                            <strong>Head ระยะส่งแนวดิ่ง:</strong>
+                            <span id="summary-vertical">0 ม.</span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Head จากความยาวท่อ:</strong>
+                            <span id="summary-pipe">0 ม.</span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Head จากรูปแบบการจ่ายน้ำ:</strong>
+                            <span id="summary-delivery">0 ม.</span>
+                        </div>
+                        <div class="summary-total">
+                            Head ปั๊มทั้งหมด = <span id="summary-total">0</span> เมตร
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success" style="margin-top: 16px;">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>⚡ หลักการเลือกปั๊ม:</strong> ให้เลือกปั๊มที่มี Head Max อย่างน้อย <span id="recommended-head">0</span> เมตร (70% ของ Head ที่คำนวณได้ต้องมากกว่า Head Max ของปั๊ม)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PUMP SELECTION SECTION -->
+            <div class="card" id="pump-select-card" style="display:none; border: 2px solid var(--gold); background: linear-gradient(135deg, #FFFBE6 0%, #FFF8CC 100%);">
+                <div class="card-title">
+                    <i class="fas fa-tint" style="color: var(--gold);"></i>
+                    รุ่นปั๊มที่แนะนำสำหรับการใช้งานนี้
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">
+                    คลิกที่เพื่อดูรายละเอียด ประสิทธิภาพ และจัดทำเอกสารประเมินราคา
+                </p>
+
+                <div id="pump-cards-grid" class="pump-cards-grid"></div>
+
+                <div id="pump-curve-canvas-wrapper" style="display:none;">
+                    <canvas id="pumpCurveChart" height="260"></canvas>
+                    <div class="curve-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#1B4D35;"></div>
+                            <span>เส้นโค้งประสิทธิภาพปั๊ม</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="border-top: 2px dashed #E07A2F; width:14px; background:none;"></div>
+                            <span>Head ที่ต้องการ</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#F5C842;"></div>
+                            <span>จุดทำงาน</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pump-flow-result" class="pump-flow-result">
+                    <span id="pump-flow-label"></span>
+                    <span class="flow-num" id="pump-flow-value"></span>
+                    <span id="pump-flow-unit"></span>
+                </div>
+
+                <!-- ZONE / DISTRIBUTION CALCULATOR -->
+                <div id="zone-calc-section" class="zone-calc-section">
+                    <div class="zone-calc-title">
+                        <i class="fas fa-seedling" style="color:var(--green-dark);"></i>
+                        รูปแบบการจ่ายน้ำ หัวน้ำหยด Dripper/สปริงเกอร์ มินิสปริงเกอร์
+                    </div>
+                    
+
+                    <div class="zone-tabs">
+                        <button class="zone-tab active" onclick="switchZoneTab('dripper', this)">💧 หัวน้ำหยด Dripper</button>
+                        <button class="zone-tab" onclick="switchZoneTab('sprinkler', this)">🌀 สปริงเกอร์ มินิสปริงเกอร์</button>
+                    </div>
+
+                    <!-- DRIPPER TAB -->
+                    <div id="zone-tab-dripper" class="zone-tab-content active">
+                        <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">
+                            โดยปกติจะใช้ <strong>6 คิว/ชม ต่อไร่</strong>
+                        </p>
+
+                        <div class="zone-step-label">ขั้นที่ 1 — จำนวนไร่ที่ปั๊มทำงานได้</div>
+                        
+                        <div class="formula-pill">
+                            <span>จำนวนไร่ที่ปั๊มทำงานได้</span>
+                            <span style="opacity:0.5">=</span>
+                            <span>อัตราการไหล (คิว/ชม) ÷ 6</span>
+                        </div>
+                        <div class="zone-inline-result" id="dripper-rai-result"></div>
+
+                        <div class="zone-step-label" style="margin-top:18px;">ขั้นที่ 2 — แบ่งโซน (ถ้าพื้นที่รวมมากกว่าขั้นที่ 1)</div>
+                        <div class="zone-info-box">
+                            <strong>หน่วยพื้นที่ที่ใช้คำนวณ</strong><br>
+                            1 ไร่ = 4 งาน = 400 ตารางวา = 1,600 ตารางเมตร
+                        </div>
+                        <div class="zone-step-label" style="margin-top:18px;">ขั้นที่ 2 — แบ่งโซน (ถ้าพื้นที่รวมมากกว่าขั้นที่ 1)</div>
+                        <div class="formula-pill" style="background:#FEF0E6;border-color:var(--orange);color:var(--orange);">
+                            <span>จำนวนโซน</span>
+                            <span style="opacity:0.5">=</span>
+                            <span>จำนวนไร่ทั้งหมด ÷ จำนวนไร่ที่ปั๊มทำงานได้</span>
+                        </div>
+
+                        <div class="input-group" style="margin-top:8px;">
+                            <label class="input-label" style="font-size:14px;">จำนวนไร่ทั้งหมดที่ต้องการให้น้ำ</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="dripper-total-rai" placeholder="เช่น 10" min="0" step="0.5" oninput="calcDripperZone()">
+                                <div class="input-unit">ไร่</div>
+                            </div>
+                        </div>
+
+                        <div id="dripper-zone-result" class="zone-result-box" style="display:none;">
+                            <div class="z-label">จำนวนโซนที่ต้องแบ่ง</div>
+                            <div class="z-value" id="dripper-zone-value">—</div>
+                            <div class="z-unit">โซน</div>
+                            <div class="z-note" id="dripper-zone-note"></div>
+                        </div>
+                    </div>
+
+                    <!-- SPRINKLER TAB -->
+                    <div id="zone-tab-sprinkler" class="zone-tab-content">
+                        <div class="zone-step-label">ขั้นที่ 1 — แปลงหน่วยปริมาณน้ำต่อหัว (L/H → คิว/ชม)</div>
+                        <div class="formula-pill">
+                            <span>คิว/ชม</span>
+                            <span style="opacity:0.5">=</span>
+                            <span>ปริมาณน้ำต่อหัว (L/H) ÷ 1000</span>
+                        </div>
+
+                        <div class="input-group" style="margin-top:4px;">
+                            <label class="input-label" style="font-size:14px;">ปริมาณน้ำต่อหัวสปริงเกอร์ (สามารถ search หาข้อมูลได้)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="sprinkler-lph" placeholder="เช่น 120" min="0" step="1" oninput="calcSprinklerZone()">
+                                <div class="input-unit">L/H</div>
+                            </div>
+                        </div>
+                        <div class="zone-inline-result" id="sprinkler-cms-result"></div>
+
+                        <div class="zone-step-label" style="margin-top:18px;">ขั้นที่ 2 — จำนวนหัวที่ปั๊มทำงานได้</div>
+                        <div class="formula-pill">
+                            <span>จำนวนหัวที่ปั๊มทำงานได้</span>
+                            <span style="opacity:0.5">=</span>
+                            <span>อัตราการไหล ÷ ปริมาณน้ำต่อหัว (คิว/ชม)</span>
+                        </div>
+                        <div class="zone-inline-result" id="sprinkler-heads-result"></div>
+
+                        <div class="zone-step-label" style="margin-top:18px;">ขั้นที่ 3 — แบ่งโซน (ถ้าหัวทั้งหมดมากกว่าขั้นที่ 2)</div>
+                        <div class="formula-pill" style="background:#FEF0E6;border-color:var(--orange);color:var(--orange);">
+                            <span>จำนวนโซน</span>
+                            <span style="opacity:0.5">=</span>
+                            <span>จำนวนหัวทั้งหมด ÷ จำนวนหัวที่ปั๊มทำงานได้</span>
+                        </div>
+
+                        <div class="input-group" style="margin-top:8px;">
+                            <label class="input-label" style="font-size:14px;">จำนวนหัวสปริงเกอร์ทั้งหมด</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="sprinkler-total-heads" placeholder="เช่น 50" min="0" step="1" oninput="calcSprinklerZone()">
+                                <div class="input-unit">หัว</div>
+                            </div>
+                        </div>
+
+                        <div id="sprinkler-zone-result" class="zone-result-box" style="display:none;">
+                            <div class="z-label">จำนวนโซนที่ต้องแบ่ง</div>
+                            <div class="z-value" id="sprinkler-zone-value">—</div>
+                            <div class="z-unit">โซน</div>
+                            <div class="z-note" id="sprinkler-zone-note"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PUMP INFO PANEL -->
+                <div id="pump-info-panel" class="pump-info-panel" style="display:none;">
+                    <div class="pump-info-header">
+                        <i class="fas fa-info-circle" style="color:var(--green-dark);"></i>
+                        ข้อมูลปั๊มที่เลือก
+                    </div>
+                    <div class="pump-info-body">
+                        <div class="pump-info-photo-col">
+                            <img id="pump-info-img" src="" alt="pump photo" class="pump-info-img">
+                        </div>
+                        <div class="pump-info-text-col">
+                            <div class="pump-info-name" id="pump-info-name"></div>
+                            <div class="pump-info-badge-row" id="pump-info-type-badge"></div>
+                            <table class="pump-info-table">
+                                <tbody id="pump-info-table-body"></tbody>
+                            </table>
+                            <div class="pump-info-desc" id="pump-info-desc"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- FOOTER -->
+    <footer>
+        <strong>🌿 KasetInno เกษตรอินโน</strong>
+        <p>ระบบน้ำการเกษตร</p>
+        <p>
+            ติดต่อ:
+            <a href="tel:020256936">📱 02-025-6936</a>
+        </p>
+        <p style="margin-top: 12px; opacity: 0.6;">© 2026 KasetInno | เครื่องคำนวณ Head ปั๊ม</p>
+    </footer>
+
+</body>
+</html>
