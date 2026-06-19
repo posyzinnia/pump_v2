@@ -2470,6 +2470,11 @@ footer a:hover {
   margin: 0;
 }
 
+.hero-logo {
+    max-width: 150px;
+    margin-top: 1rem;
+}
+
     </style>
 </head>
 <body>
@@ -2477,7 +2482,7 @@ footer a:hover {
     <header class="hero">
         <div class="hero-badge">🌾 KasetInno เกษตรอินโน</div>
         <h1>เครื่องคำนวณ <span>Head ปั๊ม</span></h1>
-        <p>Head ปั๊ม = HEAD จากระยะส่งในแนวดิ่ง + HEAD จากความยาวท่อ + HEAD จากรูปแบบการส่งน้ำ</p>
+        <img src="logo.png" alt="KasetInno logo" class="hero-logo">
     </header>
 
     <!-- STICKY NAV -->
@@ -2498,7 +2503,6 @@ footer a:hover {
                 <div class="section-num num-blue">📖</div>
                 <div>
                     <h2>Head ปั๊ม คืออะไร?</h2>
-                    <p>ทำความเข้าใจก่อนคำนวณ — Head คือแรงดันรวมที่ปั๊มต้องเอาชนะ</p>
                 </div>
             </div>
 
@@ -2513,13 +2517,6 @@ footer a:hover {
                     โดยมีหน่วยเป็น <strong style="color: var(--green-dark);">เมตร (m)</strong>
                     — ยิ่ง Head สูง ปั๊มต้องแรงมากขึ้น
                 </p>
-                <div class="pre-analogy-box">
-                    <div class="pre-analogy-icon">💡</div>
-                    <div>
-                        <strong>เปรียบเหมือนการปีนบันได:</strong>
-                        ยิ่งต้องขนน้ำขึ้นสูง ผ่านทางไกล หรือผ่านหัวฉีดที่ต้านแรงดัน — ก็ยิ่งต้องใช้ปั๊มที่มี Head สูงขึ้น
-                    </div>
-                </div>
             </div>
 
             <!-- FULL FORMULA OVERVIEW -->
@@ -2532,21 +2529,17 @@ footer a:hover {
                 <div class="pre-formula-grid">
                     <div class="pre-formula-part part-green">
                         <div class="pre-part-num">1</div>
-                        <div class="pre-part-label">Head ระยะส่งแนวดิ่ง</div>
-                        <div class="pre-part-desc">ความสูงที่ต้องส่งน้ำขึ้นไป รวมระยะสูบจากบ่อ</div>
+                        <div class="pre-part-label">Head จากระยะส่งน้ำในแนวดิ่ง</div>
                     </div>
                     <div class="pre-formula-plus">+</div>
                     <div class="pre-formula-part part-orange">
                         <div class="pre-part-num">2</div>
-                        <div class="pre-part-label">Head ความยาวท่อ</div>
-                        <div class="pre-part-desc">แรงเสียดทานในท่อ ขึ้นกับความยาวและขนาดท่อ</div>
+                        <div class="pre-part-label">Head จากความยาวท่อ</div>
                     </div>
                     <div class="pre-formula-plus">+</div>
                     <div class="pre-formula-part part-purple">
                         <div class="pre-part-num">3</div>
-                        <div class="pre-part-label">Head รูปแบบจ่ายน้ำ</div>
-                        <div class="pre-part-desc">แรงดันที่หัวน้ำหยด หรือสปริงเกอร์ต้องการ</div>
-                    </div>
+                        <div class="pre-part-label">Head จากรูปแบบจ่ายน้ำ</div>                    </div>
                 </div>
 
                 <div class="formula-box green" style="margin-top: 20px;">
