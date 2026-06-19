@@ -394,12 +394,7 @@ function renderPumpCards(totalHead) {
   const typeLabel =
     activeType === "borehole" ? "🔩 ปั๊มบาดาล" : "⚙️ ปั๊มหอยโข่ง";
 
-  // Section label
-  const label = document.createElement("p");
-  label.style.cssText =
-    "font-size:15px;font-weight:700;color:var(--green-dark);margin-bottom:12px;";
-  label.textContent = `${typeLabel} ที่รองรับ Head ≥ ${totalHead.toFixed(1)} ม.`;
-  grid.appendChild(label);
+
 
   let count = 0;
   Object.entries(PUMP_DATA).forEach(([name, data]) => {
