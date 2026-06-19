@@ -1,3 +1,11 @@
+// Helper: map numeric box value to display label
+function boxLabel(val) {
+  if (val === 3.5) return "3 (PV 5 เมตร)";
+  if (val === 3.1) return "3 (PV 10 เมตร)";
+  return String(val);
+}
+
+// State management
 let state = {
   pumpType: "borehole",
   verticalHead: 0,
@@ -177,12 +185,7 @@ function renderPumpCards(totalHead) {
   const typeLabel =
     activeType === "borehole" ? "🔩 ปั๊มบาดาล" : "⚙️ ปั๊มหอยโข่ง";
 
-  // Section label
-  const label = document.createElement("p");
-  label.style.cssText =
-    "font-size:15px;font-weight:700;color:var(--green-dark);margin-bottom:12px;";
-  label.textContent = `${typeLabel} ที่รองรับ Head ≥ ${totalHead.toFixed(1)} ม.`;
-  grid.appendChild(label);
+
 
   let count = 0;
   Object.entries(PUMP_DATA).forEach(([name, data]) => {
@@ -218,7 +221,7 @@ function renderPumpCards(totalHead) {
                         </div>
                         <div class="pump-card-stat">
                             <span>กล่อง Control Box</span>
-                            <strong>เบอร์ ${data.box}</strong>
+                            <strong>เบอร์ ${boxLabel(data.box)}</strong>
                         </div>
                     </div>
                     <div class="pump-card-flow-badge">
@@ -252,7 +255,7 @@ function scrollToElement(id) {
 
 // Sticky nav highlighting
 window.addEventListener("scroll", () => {
-  const sections = ["part1", "part2", "part3", "calculator"];
+  const sections = ["pre", "part1", "part2", "part3", "calculator"];
   let currentSection = sections[0];
 
   sections.forEach((section) => {
@@ -373,16 +376,8 @@ function updatePumpInfoPanel(pumpName) {
   if (!data) return;
 
   const typeInfo = PUMP_TYPE_INFO[data.type];
-  const maxHead = Math.max(...data.head).toFixed(0);
-  const maxFlow = Math.max(...data.flow).toFixed(1);
-  const totalHead = (
-    (state.verticalHead || 0) +
-    (state.pipeHead || 0) +
-    (state.deliveryHead || 0)
-  );
-  const estimatedFlow = getFlowAtHead(pumpName, totalHead);
 
-  // Choose image based on type
+  // Image
   const imgEl = document.getElementById("pump-info-img");
   imgEl.src = data.image;
   imgEl.alt = pumpName;
@@ -390,33 +385,33 @@ function updatePumpInfoPanel(pumpName) {
   // Name
   document.getElementById("pump-info-name").textContent = pumpName;
 
-  // Badge
+  // Badges
   document.getElementById("pump-info-type-badge").innerHTML =
     `<span class="pump-info-badge ${typeInfo.badgeClass}">${typeInfo.label}</span>` +
     `<span class="pump-info-badge" style="background:#fff7e0;color:#b8860b;border:1.5px solid #e0c040;">฿${Number(data.price).toLocaleString("en-US")} บาท</span>`;
 
-  // Table rows
-  const rows = [
-    ["รหัสสินค้า", data.power],
-    ["รูปแบบท่อ", data.po],
-    ["Head สูงสุด", `${maxHead} เมตร`],
-    ["อัตราการไหลสูงสุด", `${maxFlow} ม³/ชม`],
-    ["อัตราการไหล ณ Head ที่คำนวณ",
-      estimatedFlow !== null
-        ? `${estimatedFlow.toFixed(2)} ม³/ชม ≈ ${((estimatedFlow * 1000) / 60).toFixed(0)} ลิตร/นาที`
-        : "เกิน Head Max"
-    ],
-    ["แผงโซล่าเซลล์", `${data.panel} แผง`],
-    ["กล่อง Control Box", `กล่อง control box เบอร์ ${data.box}`],
-  ];
 
-  const tbody = document.getElementById("pump-info-table-body");
-  tbody.innerHTML = rows
-    .map(([label, val]) => `<tr><td>${label}</td><td>${val}</td></tr>`)
-    .join("");
 
-  // Description
-  document.getElementById("pump-info-desc").textContent = typeInfo.desc;
+  // Parts breakdown
+  const parts = data.parts || [];
+  const partsTotal = parts.reduce((s, p) => s + (p.price * p.qty), 0);
+  const partsGrid = document.getElementById("pump-parts-grid");
+  partsGrid.innerHTML = parts.map(p => `
+    <div class="part-item">
+      <div class="part-item-label">${p.label}</div>
+      <div class="part-item-code">${p.code}</div>
+      <div class="part-item-meta">
+        <span class="part-item-qty">จำนวน ${p.qty} ${p.unit}</span>
+        <span class="part-item-price">${p.price ? "฿" + (p.price * p.qty).toLocaleString("en-US") : "—"}</span>
+      </div>
+    </div>
+  `).join("");
+
+  // Parts total row
+  const partsTotalEl = document.getElementById("pump-parts-total");
+  partsTotalEl.textContent = partsTotal > 0
+    ? "฿" + partsTotal.toLocaleString("en-US")
+    : "฿" + Number(data.price).toLocaleString("en-US");
 
   // Show panel
   const panel = document.getElementById("pump-info-panel");
